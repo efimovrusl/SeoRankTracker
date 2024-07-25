@@ -1,0 +1,6 @@
+@SeoRankTracker.API_HostAddress = https://localhost:7207
+
+GET {{SeoRankTracker.API_HostAddress}}/api/weather-forecast/
+Accept: application/json
+
+###

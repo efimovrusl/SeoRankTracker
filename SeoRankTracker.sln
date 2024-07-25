@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34607.119
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "seoranktracker.react.ui", "src\seoranktracker.react.ui\seoranktracker.react.ui.esproj", "{558A2A96-4223-4984-9798-DD1D3D644AC4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeoRankTracker.API", "src\SeoRankTracker.API\SeoRankTracker.API.csproj", "{97E054BD-B702-44DD-BCB6-0EB72CE0E7BE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{558A2A96-4223-4984-9798-DD1D3D644AC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{558A2A96-4223-4984-9798-DD1D3D644AC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{558A2A96-4223-4984-9798-DD1D3D644AC4}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{558A2A96-4223-4984-9798-DD1D3D644AC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{558A2A96-4223-4984-9798-DD1D3D644AC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{558A2A96-4223-4984-9798-DD1D3D644AC4}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{97E054BD-B702-44DD-BCB6-0EB72CE0E7BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97E054BD-B702-44DD-BCB6-0EB72CE0E7BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97E054BD-B702-44DD-BCB6-0EB72CE0E7BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97E054BD-B702-44DD-BCB6-0EB72CE0E7BE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8293A13F-1E51-4A2B-9FCE-770B692B9181}
+	EndGlobalSection
+EndGlobal
