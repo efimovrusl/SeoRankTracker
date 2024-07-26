@@ -11,7 +11,7 @@ GET {{SeoRankTracker.API_HostAddress}}/api/website-ranks/highest-per-day?searchK
 Accept: application/json
 ###
 
-GET {{SeoRankTracker.API_HostAddress}}/api/website-ranks/search-history
+GET {{SeoRankTracker.API_HostAddress}}/api/website-ranks/unique-search-history
 Accept: application/json
 ###
 

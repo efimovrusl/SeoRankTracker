@@ -1,58 +1,87 @@
-import {useEffect, useState} from 'react';
 import './App.css';
+import {useEffect, useState} from 'react';
+import {Container, Stack, Grid, Typography, Box} from '@mui/material';
+import SearchForm from './components/SearchForm';
+import ResultsTable from './components/ResultsTable';
+import DistinctSearchHistoryList from './components/DistinctSearchHistoryList';
+import {getWebsiteRanks, WebsiteRankDto, SeoRequestDto, getHighestWebsiteRanksPerDay} from './services/Api';
 
-interface Forecast {
-    date: string;
-    temperatureC: number;
-    temperatureF: number;
-    summary: string;
-}
+const defaultSearchKeyword = 'land registry searches';
+const defaultWebsiteUrl = 'www.infotrack.co.uk';
+    
+export default function App() {
+    const [searchKeyword, setSearchKeyword] = useState<string>(defaultSearchKeyword);
+    const [websiteUrl, setWebsiteUrl] = useState<string>(defaultWebsiteUrl);
+    const [results, setResults] = useState<WebsiteRankDto[]>([]);
+    const [highestDaily, setHighestDaily] = useState<WebsiteRankDto[]>([]);
 
-function App() {
-    const [forecasts, setForecasts] = useState<Forecast[]>();
+    const handleHighestWebsiteRanksPerDay = async () => {
+        const results = await getHighestWebsiteRanksPerDay({
+            searchKeyword: searchKeyword,
+            websiteUrl: websiteUrl,
+        });
+        setHighestDaily(results);
+    };
+    
+    const handleSearch = async (searchKeyword: string, websiteUrl: string) => {
+        const seoRequestDto: SeoRequestDto = { searchKeyword, websiteUrl };
+        const response = await getWebsiteRanks(seoRequestDto);
+        setResults(response);
+        handleHighestWebsiteRanksPerDay();
+    };
 
-    useEffect(() => {
-        populateWeatherData();
-    }, []);
-
-    const contents = forecasts === undefined
-        ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a
-            href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em>
-        </p>
-        : <table className="table table-striped" aria-labelledby="tabelLabel">
-            <thead>
-            <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
-            </tr>
-            </thead>
-            <tbody>
-            {forecasts.map(forecast =>
-                <tr key={forecast.date}>
-                    <td>{forecast.date}</td>
-                    <td>{forecast.temperatureC}</td>
-                    <td>{forecast.temperatureF}</td>
-                    <td>{forecast.summary}</td>
-                </tr>
-            )}
-            </tbody>
-        </table>;
+    const handleHistorySelect = (searchKeyword: string, websiteUrl: string) => {
+        setSearchKeyword(searchKeyword);
+        setWebsiteUrl(websiteUrl);
+    };
 
     return (
-        <div>
-            <h1 id="tabelLabel">Weather forecast</h1>
-            <p>This component demonstrates fetching data from the server.</p>
-            {contents}
-        </div>
+        <>
+            {/* Fixed list on the left side */}
+            <Box
+                sx={{
+                    position: 'fixed',
+                    left: 0,
+                    top: 0,
+                    bottom: 0,
+                    width: '15%', // Adjust width as needed
+                    overflowY: 'auto',
+                    bgcolor: 'background.paper',
+                    padding: 2,
+                    boxShadow: 2, // Optional: adds a shadow for better visibility
+                }}
+            >
+                <Typography variant="h5" gutterBottom>
+                    History
+                </Typography>
+                <DistinctSearchHistoryList onSelect={handleHistorySelect} />
+            </Box>
+
+            {/* Main content area */}
+            <Container sx={{ marginLeft: '15%' }}> {/* Adjust marginLeft to match the width of the fixed list */}
+                <Typography variant="h4" gutterBottom>
+                    Google SERP Scraper
+                </Typography>
+                <Grid container spacing={0}>
+                    <Grid item xs={12}>
+                        <SearchForm
+                            searchKeyword={searchKeyword}
+                            websiteUrl={websiteUrl}
+                            onSubmit={handleSearch}
+                            onSearchKeywordChange={setSearchKeyword}
+                            onWebsiteUrlChange={setWebsiteUrl}
+                        />
+                        <Typography variant="h6" paddingTop={1} gutterBottom align="left">
+                            Results
+                        </Typography>
+                        {results.length > 0 && <ResultsTable results={results} />}
+                        <Typography variant="h6" paddingTop={2} gutterBottom align="left">
+                            Top daily positions
+                        </Typography>
+                        {highestDaily.length > 0 && <ResultsTable results={highestDaily} />}
+                    </Grid>
+                </Grid>
+            </Container>
+        </>
     );
-
-    async function populateWeatherData() {
-        const response = await fetch('api/weather-forecast');
-        const data = await response.json();
-        setForecasts(data);
-    }
-}
-
-export default App;
+};

@@ -17,5 +17,5 @@ BEGIN
              ResultUrl,
              Description,
              CAST(Date AS DATE)
-    ORDER BY Date
+    ORDER BY Date DESC
 END;

@@ -28,7 +28,7 @@ public class WebsiteRanksController(ILogger<WebsiteRanksController> logger,
         return highestRanksPerDay;
     }
     
-    [HttpGet("search-history")]
+    [HttpGet("unique-search-history")]
     public async Task<ActionResult<IEnumerable<SeoRequestDto>>> GetHighestWebsiteRanksPerDayAsync()
     {
         List<SeoRequestDto> distinctSearches = await websiteRankService.GetDistinctKeywordUrlPairsAsync();
