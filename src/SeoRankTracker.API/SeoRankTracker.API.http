@@ -1,6 +1,9 @@
 @SeoRankTracker.API_HostAddress = https://localhost:7207
 
-GET {{SeoRankTracker.API_HostAddress}}/api/weather-forecast/
+@searchKeyword = land registry searches
+@website = www.infotrack.co.uk
+
+GET {{SeoRankTracker.API_HostAddress}}/api/website-ranks?searchKeyword={{searchKeyword}}&website={{website}}
 Accept: application/json
 
 ###
