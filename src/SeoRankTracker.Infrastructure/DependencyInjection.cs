@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using SeoRankTracker.Application.Repositories;
 using SeoRankTracker.Application.Services;
+using SeoRankTracker.Infrastructure.Repositories;
 using SeoRankTracker.Infrastructure.Services;
 
 namespace SeoRankTracker.Infrastructure;
@@ -9,6 +11,7 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructure(this IServiceCollection serviceCollection)
     {
         serviceCollection.AddScoped<IGoogleScrapingService, GoogleScrapingService>();
+        serviceCollection.AddScoped<IWebsiteRankRepository, WebsiteRankRepository>();
         
         serviceCollection.AddHttpClient(Constants.GoogleScraperHttpClientName, client =>
         {

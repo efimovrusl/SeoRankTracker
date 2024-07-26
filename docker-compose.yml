@@ -1,0 +1,15 @@
+﻿version: '3.8'
+
+# Run: 'docker-compose up' in this directory to spin up a local sql server for testing
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server
+    container_name: seo-rank-tracker-local
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=LocalDbPassword123
+    ports:
+      - "1433:1433"
+    volumes:
+      - ./temp/sqlserver_data:/var/opt/mssql/data

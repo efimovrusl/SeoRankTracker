@@ -3,7 +3,15 @@
 @searchKeyword = land registry searches
 @website = www.infotrack.co.uk
 
-GET {{SeoRankTracker.API_HostAddress}}/api/website-ranks?searchKeyword={{searchKeyword}}&website={{website}}
+GET {{SeoRankTracker.API_HostAddress}}/api/website-ranks?searchKeyword={{searchKeyword}}&websiteUrl={{website}}
 Accept: application/json
-
 ###
+
+GET {{SeoRankTracker.API_HostAddress}}/api/website-ranks/highest-per-day?searchKeyword={{searchKeyword}}&websiteUrl={{website}}
+Accept: application/json
+###
+
+GET {{SeoRankTracker.API_HostAddress}}/api/website-ranks/search-history
+Accept: application/json
+###
+

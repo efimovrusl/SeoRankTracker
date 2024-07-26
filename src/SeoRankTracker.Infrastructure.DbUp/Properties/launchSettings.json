@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "profiles": {
+    "Run local migrations": {
+      "commandName": "Executable",
+      "executablePath": "$(MSBuildProjectDirectory)\\\\bin\\\\Debug\\\\net8.0\\\\SeoRankTracker.Infrastructure.DbUp.exe",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      },
+      "nativeDebugging": false
+    }
+  }
+}

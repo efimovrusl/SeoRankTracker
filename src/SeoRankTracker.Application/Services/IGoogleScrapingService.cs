@@ -1,8 +1,8 @@
-﻿using SeoRankTracker.Domain.DTOs;
+﻿using SeoRankTracker.Shared.DTOs;
 
 namespace SeoRankTracker.Application.Services;
 
 public interface IGoogleScrapingService
 {
-    public Task<List<WebsiteRankDto>> GetWebsiteRanksAsync(string searchKeyword, string websiteUrl);
+    public Task<List<WebsiteRankDto>> GetWebsiteRanksAsync(SeoRequestDto seoRequestDto);
 }

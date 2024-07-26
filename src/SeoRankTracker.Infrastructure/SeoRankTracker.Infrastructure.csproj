@@ -7,14 +7,16 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Dapper" Version="2.1.35" />
       <PackageReference Include="HtmlAgilityPack" Version="1.11.61" />
+      <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.4" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0-preview.6.24327.7" />
       <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\SeoRankTracker.Application\SeoRankTracker.Application.csproj" />
-      <ProjectReference Include="..\SeoRankTracker.Domain\SeoRankTracker.Domain.csproj" />
+      <ProjectReference Include="..\SeoRankTracker.Shared\SeoRankTracker.Shared.csproj" />
     </ItemGroup>
 
 </Project>

@@ -17,7 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SeoRankTracker.Application\SeoRankTracker.Application.csproj" />
-    <ProjectReference Include="..\SeoRankTracker.Domain\SeoRankTracker.Domain.csproj" />
+    <ProjectReference Include="..\SeoRankTracker.Shared\SeoRankTracker.Shared.csproj" />
     <ProjectReference Include="..\SeoRankTracker.Infrastructure\SeoRankTracker.Infrastructure.csproj" />
   </ItemGroup>
 

@@ -1,22 +1,37 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SeoRankTracker.Application.Services;
-using SeoRankTracker.Domain.DTOs;
+using SeoRankTracker.Shared.DTOs;
 
 namespace SeoRankTracker.API.Controllers;
 
 [ApiController]
 [Route("api/website-ranks")]
 public class WebsiteRanksController(ILogger<WebsiteRanksController> logger, 
-    IGoogleScrapingService scrapingService) : ControllerBase
+    IWebsiteRankService websiteRankService) : ControllerBase
 {
     private ILogger<WebsiteRanksController> _logger = logger;
     
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<WebsiteRankDto>>> Get(string searchKeyword, string website)
+    public async Task<ActionResult<IEnumerable<WebsiteRankDto>>> Get([FromQuery] SeoRequestDto seoRequestDto)
     {
-        List<WebsiteRankDto> ranks;
-        ranks = await scrapingService.GetWebsiteRanksAsync(searchKeyword, website);
-        // some services' calls
+        List<WebsiteRankDto> ranks = await websiteRankService
+            .GetWebsiteRanksAsync(seoRequestDto);
         return ranks;
+    }
+
+    [HttpGet("highest-per-day")]
+    public async Task<ActionResult<IEnumerable<WebsiteRankDto>>> GetHighestWebsiteRanksPerDayAsync(
+        [FromQuery] SeoRequestDto seoRequestDto)
+    {
+        List<WebsiteRankDto> highestRanksPerDay = await websiteRankService
+            .GetHighestWebsiteRanksPerDayAsync(seoRequestDto);
+        return highestRanksPerDay;
+    }
+    
+    [HttpGet("search-history")]
+    public async Task<ActionResult<IEnumerable<SeoRequestDto>>> GetHighestWebsiteRanksPerDayAsync()
+    {
+        List<SeoRequestDto> distinctSearches = await websiteRankService.GetDistinctKeywordUrlPairsAsync();
+        return distinctSearches;
     }
 }

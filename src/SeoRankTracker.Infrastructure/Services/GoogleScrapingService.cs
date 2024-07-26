@@ -1,7 +1,7 @@
 ﻿using HtmlAgilityPack;
 using Microsoft.Extensions.Logging;
 using SeoRankTracker.Application.Services;
-using SeoRankTracker.Domain.DTOs;
+using SeoRankTracker.Shared.DTOs;
 
 namespace SeoRankTracker.Infrastructure.Services;
 
@@ -11,9 +11,9 @@ public class GoogleScrapingService(ILogger<GoogleScrapingService> logger,
     private readonly ILogger _logger = logger;
     private readonly HttpClient _httpClient = httpClientFactory.CreateClient(Constants.GoogleScraperHttpClientName);
 
-    public async Task<List<WebsiteRankDto>> GetWebsiteRanksAsync(string searchKeyword, string websiteUrl)
+    public async Task<List<WebsiteRankDto>> GetWebsiteRanksAsync(SeoRequestDto seoRequestDto)
     {
-        var encodedSearchKeyword = Uri.EscapeDataString(searchKeyword);
+        var encodedSearchKeyword = Uri.EscapeDataString(seoRequestDto.SearchKeyword);
         var url = $"/search?num=100&q={encodedSearchKeyword}";
         string response;
         try
@@ -25,10 +25,10 @@ public class GoogleScrapingService(ILogger<GoogleScrapingService> logger,
             _logger.Log(LogLevel.Error, e.Message);
             throw;
         }
-        return ParseWebsiteRanksFromGoogleHtml(response, searchKeyword, websiteUrl);
+        return ParseWebsiteRanksFromGoogleHtml(response, seoRequestDto);
     }
 
-    private static List<WebsiteRankDto> ParseWebsiteRanksFromGoogleHtml(string html, string searchKeyword, string websiteUrl)
+    private static List<WebsiteRankDto> ParseWebsiteRanksFromGoogleHtml(string html, SeoRequestDto seoRequestDto)
     {
         var ranks = new List<WebsiteRankDto>();
         var doc = new HtmlDocument();
@@ -59,15 +59,17 @@ public class GoogleScrapingService(ILogger<GoogleScrapingService> logger,
                 var url = anchorNode.GetAttributeValue("href", string.Empty);
                 var title = h3Node.InnerText.Trim();
         
-                if (url.Contains(websiteUrl))
+                if (url.Contains(seoRequestDto.WebsiteUrl))
                 {
                     // Add the result to the list
                     ranks.Add(new WebsiteRankDto
                     {
-                        FullUrl = url,
-                        SearchKeyword = searchKeyword,
+                        WebsiteUrl = seoRequestDto.WebsiteUrl,
+                        ResultUrl = url,
+                        SearchKeyword = seoRequestDto.SearchKeyword,
                         Description = title,
-                        Position = position
+                        Position = position,
+                        Date = DateTime.Now
                     });
                 }
             }

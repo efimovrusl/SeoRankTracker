@@ -3,6 +3,15 @@ using SeoRankTracker.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+builder.Configuration.AddJsonFile(environment switch
+    {
+        "Development" => "appsettings.Development.json",
+        _ => "appsettings.json"
+    },
+    optional: true,
+    reloadOnChange: true);
+
 // Custom dependencies
 builder.Services.AddInfrastructure()
                 .AddApplication();
