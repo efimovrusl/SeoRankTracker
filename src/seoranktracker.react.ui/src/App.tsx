@@ -1,6 +1,6 @@
 import './App.css';
-import {useEffect, useState} from 'react';
-import {Container, Stack, Grid, Typography, Box} from '@mui/material';
+import {useState} from 'react';
+import {Container, Grid, Typography, Box} from '@mui/material';
 import SearchForm from './components/SearchForm';
 import ResultsTable from './components/ResultsTable';
 import DistinctSearchHistoryList from './components/DistinctSearchHistoryList';
@@ -14,25 +14,36 @@ export default function App() {
     const [websiteUrl, setWebsiteUrl] = useState<string>(defaultWebsiteUrl);
     const [results, setResults] = useState<WebsiteRankDto[]>([]);
     const [highestDaily, setHighestDaily] = useState<WebsiteRankDto[]>([]);
+    const [historyRefreshTrigger, setHistoryRefreshTrigger] = useState(0);
 
+    const handleRefresh = () => {
+        setHistoryRefreshTrigger(prev => prev + 1); // Trigger a change to refresh the component
+    };
+    
     const handleHighestWebsiteRanksPerDay = async () => {
-        const results = await getHighestWebsiteRanksPerDay({
+        setHighestDaily(await getHighestWebsiteRanksPerDay({
             searchKeyword: searchKeyword,
             websiteUrl: websiteUrl,
-        });
-        setHighestDaily(results);
+        }));
     };
     
     const handleSearch = async (searchKeyword: string, websiteUrl: string) => {
         const seoRequestDto: SeoRequestDto = { searchKeyword, websiteUrl };
-        const response = await getWebsiteRanks(seoRequestDto);
-        setResults(response);
+        setResults(await getWebsiteRanks(seoRequestDto));
         handleHighestWebsiteRanksPerDay();
+        handleRefresh();
     };
 
-    const handleHistorySelect = (searchKeyword: string, websiteUrl: string) => {
-        setSearchKeyword(searchKeyword);
-        setWebsiteUrl(websiteUrl);
+    const handleHistorySelect = async (searchKeywordParam: string, websiteUrlParam: string) => {
+        setSearchKeyword(searchKeywordParam);
+        setWebsiteUrl(websiteUrlParam);
+        if (searchKeywordParam !== searchKeyword || websiteUrlParam !== websiteUrl) {
+            setResults([]);
+        }
+        setHighestDaily(await getHighestWebsiteRanksPerDay({
+            searchKeyword: searchKeywordParam,
+            websiteUrl: websiteUrlParam,
+        }));
     };
 
     return (
@@ -54,7 +65,7 @@ export default function App() {
                 <Typography variant="h5" gutterBottom>
                     History
                 </Typography>
-                <DistinctSearchHistoryList onSelect={handleHistorySelect} />
+                <DistinctSearchHistoryList onSelect={handleHistorySelect} refreshTrigger={historyRefreshTrigger} />
             </Box>
 
             {/* Main content area */}
@@ -71,14 +82,18 @@ export default function App() {
                             onSearchKeywordChange={setSearchKeyword}
                             onWebsiteUrlChange={setWebsiteUrl}
                         />
-                        <Typography variant="h6" paddingTop={1} gutterBottom align="left">
-                            Results
-                        </Typography>
-                        {results.length > 0 && <ResultsTable results={results} />}
-                        <Typography variant="h6" paddingTop={2} gutterBottom align="left">
-                            Top daily positions
-                        </Typography>
-                        {highestDaily.length > 0 && <ResultsTable results={highestDaily} />}
+                        {results.length > 0 && <div>
+                            <Typography variant="h6" paddingTop={1} gutterBottom align="left">
+                                Results
+                            </Typography>
+                            <ResultsTable results={results} />
+                        </div>}
+                        {highestDaily.length > 0 && <div>
+                            <Typography variant="h6" paddingTop={2} gutterBottom align="left">
+                                Top daily positions
+                            </Typography>
+                            <ResultsTable results={highestDaily} />
+                        </div>}
                     </Grid>
                 </Grid>
             </Container>

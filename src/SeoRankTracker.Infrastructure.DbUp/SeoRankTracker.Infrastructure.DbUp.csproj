@@ -6,6 +6,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<StartupObject>SeoRankTracker.Infrastructure.DbUp.Program</StartupObject>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -18,15 +19,18 @@
 	</ItemGroup>
 
 	<ItemGroup>
-
-		<None Remove="appsettings.Development.json" />
+		<Content Include="..\..\.dockerignore">
+		  <Link>.dockerignore</Link>
+		</Content>
 		<Content Include="appsettings.Development.json">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Update="appsettings.json">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
-
+		<Content Update="appsettings.Docker.Development.json">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -36,11 +40,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Migrations\Incremental\" />
+		<Folder Include="Migrations\Incremental\" />
+		<Folder Include="Migrations\Idempotent\" />
 	</ItemGroup>
-
-	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-	  <Exec Command="cd $(ProjectDir)\..&#xD;&#xA;docker-compose up -d" />
-	</Target>
-
 </Project>

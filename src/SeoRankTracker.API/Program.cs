@@ -6,10 +6,11 @@ var builder = WebApplication.CreateBuilder(args);
 var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 builder.Configuration.AddJsonFile(environment switch
     {
+        "Docker" => "appsettings.Docker.Development.json",
         "Development" => "appsettings.Development.json",
         _ => "appsettings.json"
     },
-    optional: true,
+    optional: false,
     reloadOnChange: true);
 
 // Custom dependencies

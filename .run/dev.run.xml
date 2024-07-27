@@ -1,5 +1,5 @@
-﻿<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="seoranktracker.react.ui: run" type="js.build_tools.npm" nameIsGenerated="true">
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="dev" type="js.build_tools.npm" nameIsGenerated="true">
     <package-json value="$PROJECT_DIR$/src/SeoRankTracker.React.UI/package.json" />
     <command value="run" />
     <scripts>

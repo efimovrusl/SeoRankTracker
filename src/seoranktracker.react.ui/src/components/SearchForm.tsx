@@ -1,5 +1,5 @@
-import React, {ChangeEvent, useState} from 'react';
-import {Button, TextField, Box, Stack} from '@mui/material';
+import React, {ChangeEvent} from 'react';
+import {Button, TextField, Box} from '@mui/material';
 
 interface SearchFormProps {
     searchKeyword: string;

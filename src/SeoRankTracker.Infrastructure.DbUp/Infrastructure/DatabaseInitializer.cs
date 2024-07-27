@@ -8,8 +8,8 @@ public static class DatabaseInitializer
 {
     public static void ApplyMigrations(string connectionString)
     {
-        if (!DbConnectionCheckHelper.CheckDbUpAndRunning(connectionString, 10, 5))
-            throw new Exception("Couldn't connect to the database. Check Docker containers.");
+        if (!DbConnectionCheckHelper.CheckDbUpAndRunning(connectionString, 12, 5))
+            throw new Exception($"Couldn't connect to the database. Check Docker containers.");
 
         DeployChanges.To
             .SqlDatabase(connectionString)

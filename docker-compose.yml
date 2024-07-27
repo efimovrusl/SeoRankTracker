@@ -1,10 +1,7 @@
-﻿version: '3.8'
-
-# Run: 'docker-compose up' in this directory to spin up a local sql server for testing
-
-services:
+﻿services:
   sqlserver:
     image: mcr.microsoft.com/mssql/server
+    platform: linux/amd64
     container_name: seo-rank-tracker-local
     environment:
       - ACCEPT_EULA=Y
@@ -13,3 +10,27 @@ services:
       - "1433:1433"
     volumes:
       - ./temp/sqlserver_data:/var/opt/mssql/data
+
+  seoranktracker.infrastructure.dbup:
+    image: seoranktracker.infrastructure.dbup
+    build:
+      context: ./src
+      dockerfile: SeoRankTracker.Infrastructure.DbUp/Dockerfile
+    environment:
+      - DOTNET_ENVIRONMENT=Docker
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=SeoRankTracker;User Id=sa;Password=LocalDbPassword123;TrustServerCertificate=True;
+    depends_on:
+      - sqlserver
+
+  seoranktracker.api:
+    image: seoranktracker.api
+    build:
+      context: ./src
+      dockerfile: SeoRankTracker.API/Dockerfile
+    ports:
+      - "5163:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=SeoRankTracker;User Id=sa;Password=LocalDbPassword123;TrustServerCertificate=True;
+    depends_on:
+      - seoranktracker.infrastructure.dbup

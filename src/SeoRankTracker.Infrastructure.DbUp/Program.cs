@@ -22,14 +22,16 @@ internal class Program
 
     private static IConfigurationBuilder CreateConfigurationBuilder(string environment)
     {
+        var path = Directory.GetCurrentDirectory();
         return new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
+            .SetBasePath(path)
             .AddJsonFile(environment switch
                 {
+                    "Docker" => "appsettings.Docker.Development.json",
                     "Development" => "appsettings.Development.json",
                     _ => "appsettings.json"
                 },
-                optional: true,
+                optional: false,
                 reloadOnChange: true);
     }
 }

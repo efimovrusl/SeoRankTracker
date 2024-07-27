@@ -4,10 +4,11 @@ import { SeoRequestDto, getSearchHistory } from '../services/Api';
 
 interface SearchHistoryListProps {
   onSelect: (searchKeyword: string, websiteUrl: string) => void;
+  refreshTrigger: any;
 }
 
 
-export default function DistinctSearchHistoryList({ onSelect }: SearchHistoryListProps) {
+export default function DistinctSearchHistoryList({ onSelect, refreshTrigger }: SearchHistoryListProps) {
   const [searchHistory, setSearchHistory] = useState<SeoRequestDto[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -23,7 +24,7 @@ export default function DistinctSearchHistoryList({ onSelect }: SearchHistoryLis
       }
     };
     fetchSearchHistory();
-  }, []);
+  }, [refreshTrigger]);
 
   const handleClick = (searchKeyword: string, websiteUrl: string) => {
     onSelect(searchKeyword, websiteUrl);

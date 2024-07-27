@@ -1,14 +1,10 @@
 import {fileURLToPath, URL} from 'node:url';
-import {defineConfig} from 'vite';
+import {defineConfig, loadEnv, UserConfig} from 'vite';
 import react from '@vitejs/plugin-react';
 import fs from 'fs';
 import path from 'path';
-import dotenv from 'dotenv';
 import process from 'process';
 import child_process from 'child_process';
-
-// Load environment variables from .env file
-dotenv.config();
 
 const baseFolder =
     process.env.APPDATA !== undefined && process.env.APPDATA !== ''
@@ -34,30 +30,33 @@ if (!fs.existsSync(certFilePath) || !fs.existsSync(keyFilePath)) {
     }
 }
 
-// Use VITE_API_URL from the .env file
-const target = process.env.VITE_API_URL || 'https://localhost:7206';
-
 // https://vitejs.dev/config/
-export default defineConfig({
-    plugins: [react()],
-    resolve: {
-        alias: {
-            '@': fileURLToPath(new URL('./src', import.meta.url))
-        }
-    },
-    server: {
-        proxy: {
-            "/api": {
-                target: target,
-                changeOrigin: true,
-                secure: false,
-                rewrite: (path) => path.replace(/^\/api/, "/api"),
-            },
+export default defineConfig(({ mode }): UserConfig => {
+    const env = loadEnv(mode, process.cwd(), '')
+    return {
+        plugins: [react()],
+        resolve: {
+            alias: {
+                '@': fileURLToPath(new URL('./src', import.meta.url))
+            }
         },
-        port: 5173,
-        https: {
-            key: fs.readFileSync(keyFilePath),
-            cert: fs.readFileSync(certFilePath),
+        server: {
+            
+            proxy: {
+                "/api": {
+                    target: env.VITE_API_URL,
+                    changeOrigin: true,
+                    secure: false,
+                    rewrite: (path) => path.replace(/^\/api/, "/api"),
+                },
+            },
+            port: Number(env.VITE_DEV_PORT),
+            strictPort: mode === 'docker',
+            host: true,
+            https: {
+                key: fs.readFileSync(keyFilePath),
+                cert: fs.readFileSync(certFilePath),
+            }
         }
     }
 });

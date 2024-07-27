@@ -1,4 +1,4 @@
-@SeoRankTracker.API_HostAddress = https://localhost:7207
+@SeoRankTracker.API_HostAddress = http://localhost:5163
 
 @searchKeyword = land registry searches
 @website = www.infotrack.co.uk

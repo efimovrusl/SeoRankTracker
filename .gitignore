@@ -5,6 +5,7 @@ obj/
 riderModule.iml
 /_ReSharper.Caches/
 **/.DS_Store
+**/vite.config.ts.timestamp*
 
 
 ## Ignore Visual Studio temporary files, build results, and
