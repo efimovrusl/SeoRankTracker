@@ -15,7 +15,7 @@ Before you start, ensure that you have the following installed on your machine:
 
 Navigate to the root directory of the solution and start the Docker containers with this command:
 ```
-docker-compose up -d
+docker compose up -d
 ```
 This command will initialise local SQL Server database and API containers with `docker-compose.yml` config file.
 
